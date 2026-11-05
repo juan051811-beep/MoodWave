@@ -1,0 +1,42 @@
+# Android / Gradle
+.gradle/
+.kotlin/
+**/build/
+local.properties
+captures/
+.externalNativeBuild/
+.cxx/
+
+# IDE y sistema operativo
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
+__MACOSX/
+
+# Datos locales, reportes y archivos compilados
+*.apk
+*.aab
+*.hprof
+*.log
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+*.sqlite-wal
+*.sqlite-shm
+*.db-wal
+*.db-shm
+*.zip
+
+# Credenciales y material de firma
+*.jks
+*.keystore
+*.p12
+*.pem
+*.key
+keystore.properties
+secrets.properties
+.env
+.env.*
+google-services.json

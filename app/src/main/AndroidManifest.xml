@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- ===================================== -->
+    <!-- PERMISOS DE RECORDATORIOS -->
+    <!-- ===================================== -->
+
+    <!-- Mostrar notificaciones en Android 13+ -->
+
+    <uses-permission
+        android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- Restaurar recordatorios al reiniciar -->
+
+    <uses-permission
+        android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <!-- ===================================== -->
+    <!-- HEALTH CONNECT -->
+    <!-- ===================================== -->
+
+    <!-- Solo leer pasos, sin modificarlos -->
+
+    <uses-permission
+        android:name="android.permission.health.READ_STEPS" />
+
+    <!-- ===================================== -->
+    <!-- VISIBILIDAD DE HEALTH CONNECT -->
+    <!-- ===================================== -->
+
+    <queries>
+
+        <package
+            android:name="com.google.android.apps.healthdata" />
+
+    </queries>
+
+    <!-- ===================================== -->
+    <!-- APLICACION MOODWAVE -->
+    <!-- ===================================== -->
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.PP1JD">
+
+        <!-- ================================= -->
+        <!-- MAIN ACTIVITY ORIGINAL -->
+        <!-- ================================= -->
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.PP1JD"
+            android:windowSoftInputMode="adjustResize">
+
+            <intent-filter>
+
+                <action
+                    android:name="android.intent.action.MAIN" />
+
+                <category
+                    android:name="android.intent.category.LAUNCHER" />
+
+            </intent-filter>
+
+        </activity>
+
+        <!-- ================================= -->
+        <!-- HEALTH CONNECT: PRIVACIDAD -->
+        <!-- ================================= -->
+        <!--
+            Esta actividad muestra la
+            pantalla de privacidad creada
+            en el paso 38.5.
+
+            Health Connect puede abrirla
+            cuando el usuario consulta
+            el motivo de los permisos.
+
+            Este intent-filter permite
+            utilizarla en Android 13
+            y versiones anteriores.
+        -->
+
+        <activity
+            android:name=".healthconnect.HealthConnectPrivacyActivity"
+            android:exported="true"
+            android:theme="@style/Theme.PP1JD">
+
+            <intent-filter>
+
+                <action
+                    android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
+
+            </intent-filter>
+
+        </activity>
+
+        <!-- ================================= -->
+        <!-- HEALTH CONNECT: ANDROID 14+ -->
+        <!-- ================================= -->
+        <!--
+            Android 14 y posteriores
+            utilizan otro mecanismo para
+            mostrar el uso de permisos
+            relacionados con salud.
+
+            activity-alias permite abrir
+            la misma pantalla de privacidad
+            sin duplicar su codigo.
+
+            El permiso START_VIEW_PERMISSION_USAGE
+            restringe quien puede iniciar
+            esta actividad mediante el alias.
+        -->
+
+        <activity-alias
+            android:name=".healthconnect.HealthConnectPermissionUsageActivity"
+            android:exported="true"
+            android:targetActivity=".healthconnect.HealthConnectPrivacyActivity"
+            android:permission="android.permission.START_VIEW_PERMISSION_USAGE">
+
+            <intent-filter>
+
+                <action
+                    android:name="android.intent.action.VIEW_PERMISSION_USAGE" />
+
+                <category
+                    android:name="android.intent.category.HEALTH_PERMISSIONS" />
+
+            </intent-filter>
+
+        </activity-alias>
+
+        <!-- ================================= -->
+        <!-- RECEPTOR DE RECORDATORIOS -->
+        <!-- ================================= -->
+        <!--
+            Recibe las alarmas programadas
+            por RecordatorioManager.
+        -->
+
+        <receiver
+            android:name=".recordatorios.RecordatorioReceiver"
+            android:enabled="true"
+            android:exported="false" />
+
+        <!-- ================================= -->
+        <!-- RECEPTOR DE REINICIO -->
+        <!-- ================================= -->
+        <!--
+            Restaura los recordatorios
+            cuando se reinicia el celular,
+            se actualiza MoodWave o cambia
+            la hora o zona horaria.
+        -->
+
+        <receiver
+            android:name=".recordatorios.RecordatorioReinicioReceiver"
+            android:enabled="true"
+            android:exported="false">
+
+            <intent-filter>
+
+                <!-- Reinicio del dispositivo -->
+
+                <action
+                    android:name="android.intent.action.BOOT_COMPLETED" />
+
+                <!-- Actualizacion de MoodWave -->
+
+                <action
+                    android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+
+                <!-- Cambio de hora -->
+
+                <action
+                    android:name="android.intent.action.TIME_SET" />
+
+                <!-- Cambio de zona horaria -->
+
+                <action
+                    android:name="android.intent.action.TIMEZONE_CHANGED" />
+
+            </intent-filter>
+
+        </receiver>
+
+    </application>
+
+</manifest>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.PP1JD" parent="android:Theme.Material.Light.NoActionBar" />
+</resources>
